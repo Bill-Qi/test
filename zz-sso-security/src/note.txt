@@ -2,9 +2,14 @@ https://www.cnblogs.com/lihaoyang/category/1165059.html
 https://www.jianshu.com/p/a5fe18214287
 
 https://github.com/Bill-Qi/test.git
-Bill-Qi
-15804252680@139.com
-qx000123
 
-// GIT 上传 2019.11.9
+// GIT 上传 2019.11.19
 https://blog.csdn.net/superxiaolong123/article/details/81189481
+
+
+2019.11.20
+可以在error文件夹编辑错误页面，spring boot直接执行
+SimpleUrlAuthenticationFailureHandler接口是
+AuthenticationFailureHandler的实现；然后继承它覆盖它的方法，实现Json/Html自定义跳转；
+
+***增加图片验证 昨天又犯了导入包错误的问题 严重重视***
