@@ -11,13 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mtf.sso.properties.LoginType;
 import com.mtf.sso.properties.SecurityProperties;
+import com.mtf.sso.support.SimpleResponse;
 
 /**
  * @author Bill
@@ -25,8 +25,8 @@ import com.mtf.sso.properties.SecurityProperties;
  *
  */
 @Component("mtfAuthenticationFailureHandler")
-//public class MtfAuthencationFailHandler implements AuthenticationFailureHandler {
-public class MtfAuthencationFailHandler extends SimpleUrlAuthenticationFailureHandler {
+//public class MtfAuthencationFailureHandler implements AuthenticationFailureHandler {
+public class MtfAuthencationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -51,7 +51,7 @@ public class MtfAuthencationFailHandler extends SimpleUrlAuthenticationFailureHa
 		if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write(objectMapper.writeValueAsString(exception));
+			response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
 		} else {
 			super.onAuthenticationFailure(request, response, exception);
 		}
