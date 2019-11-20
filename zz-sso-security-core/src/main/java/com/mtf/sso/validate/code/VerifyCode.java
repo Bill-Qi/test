@@ -16,13 +16,22 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
+import javax.annotation.PostConstruct;
 import javax.imageio.ImageIO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import com.mtf.sso.properties.SecurityProperties;
 
 public class VerifyCode {
+	
+	private SecurityProperties securityProperties = new SecurityProperties();
+	
 
 	private int w = 70;// 图片长
 
 	private int h = 35;// 图片宽
+	
+	private int l = 8;
 
 	private Random r = new Random();// Random类 生成随机数
 
@@ -35,6 +44,15 @@ public class VerifyCode {
 	private Color bgColor = new Color(255, 255, 255);
 	// 验证码上的文本
 	private String text;
+
+	//private VerifyCode() {};
+	
+	public VerifyCode(int width, int height, int charLength) {
+		super();
+        this.w = width;
+        this.h = height;
+        this.l = charLength;
+	}
 
 	// 生成随机的颜色
 	private Color randomColor() {
@@ -100,24 +118,26 @@ public class VerifyCode {
 		Graphics2D g2 = (Graphics2D) image.getGraphics();// 得到绘制环境
 		StringBuilder sb = new StringBuilder();// 用来装载生成的验证码文本
 		// 向图片中画4个字符
-		for (int i = 0; i < 4; i++) {// 循环四次，每次生成一个字符
+		//securityProperties.getCode().getImage().getLength();
+		//int imageLength = securityProperties.getCode().getImage().getLength();// TODO
+		for (int i = 0; i < l; i++) {// 循环四次，每次生成一个字符
 			String s = randomChar() + "";// 随机生成一个字母
 			sb.append(s); // 把字母添加到sb中
-			float x = i * 1.0F * w / 4; // 设置当前字符的x轴坐标
+			float x = i * 1.0F * w / l; // 设置当前字符的x轴坐标
 			g2.setFont(randomFont()); // 设置随机字体
 			g2.setColor(randomColor()); // 设置随机颜色
-			g2.drawString(s, x, h - 5); // 画图
+			g2.drawString(s, x, h - l -1); // 画图
 		}
 		this.text = sb.toString(); // 把生成的字符串赋给了this.text
 		drawLine(image); // 添加干扰线
 		return image;
 	}
 
-	public static void main(String[] args) throws FileNotFoundException, IOException {
-		VerifyCode vc = new VerifyCode();// 创建VerifyCode类的对象
-		BufferedImage bi = vc.getImage();// 调用getImge()方法获得一个BufferedImage对象
-		VerifyCode.output(bi, new FileOutputStream("C:/验证码3.jpg"));// 调用静态方法output()方法将图片保存在文件输出流中
-		System.out.println(vc.getText());// 在控制台上打印验证码的文本值
-	}
+//	public static void main(String[] args) throws FileNotFoundException, IOException {
+//		VerifyCode vc = new VerifyCode();// 创建VerifyCode类的对象
+//		BufferedImage bi = vc.getImage();// 调用getImge()方法获得一个BufferedImage对象
+//		VerifyCode.output(bi, new FileOutputStream("D:/验证码3.jpg"));// 调用静态方法output()方法将图片保存在文件输出流中
+//		System.out.println(vc.getText());// 在控制台上打印验证码的文本值
+//	}
 
 }
