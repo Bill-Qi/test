@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 * @date 2019年11月21日
 *
 */
-@Component("imageCodeGenerator")
+//@Component("imageCodeGenerator") // 打开拓展新的生成码方式
 public class DemoImageCodeGenerator implements ValidateCodeGenerator {
 
     @Override

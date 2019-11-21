@@ -5,6 +5,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.mtf.sso.properties.SecurityProperties;
+import com.mtf.sso.validate.code.sms.DefaultSmsCodeSender;
+import com.mtf.sso.validate.code.sms.SmsCodeSender;
 
 /**
  * 配置验证码生成接口ValidateCodeGenerator的实际实现类的Bean
@@ -39,5 +41,20 @@ public class ValidateCodeBeanConfig {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
+    }
+    
+    /**
+     * 配置短信验证码生成bean
+     * @Description: 
+     * @param @return   
+     * @return SmsCodeSender  
+     * @throws
+     * @author Bill
+     * @date 2019年11月21日
+     */
+    @Bean
+    @ConditionalOnMissingBean(SmsCodeSender.class)
+    public SmsCodeSender smsCodeSender(){
+        return new DefaultSmsCodeSender();
     }
 }

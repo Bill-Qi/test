@@ -63,7 +63,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			.failureHandler(mtfAuthencationFailureHandler)
 			.and().authorizeRequests() // 下边的都是授权的配置
 			.antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage()
-					,"/verifycode/image").permitAll() //验证码// 放过登录页不过滤，否则报错
+					,"/verifycode/image", "/verifycode/sms").permitAll() //验证码// 放过登录页不过滤，否则报错
 			.anyRequest() // 任何请求
 			.authenticated() // 都需要身份认证
 

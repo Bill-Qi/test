@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import com.mtf.sso.properties.SecurityProperties;
+import com.mtf.sso.validate.code.sms.SmsCodeSender;
 
 @RestController
 public class ValidateCodeController {
@@ -32,15 +33,33 @@ public class ValidateCodeController {
     private SecurityProperties securityProperties;
     
     @Autowired
-    private ValidateCodeGenerator ImageCodeGenerator;
+    private ValidateCodeGenerator imageCodeGenerator;
+    
+    @Autowired
+    private ValidateCodeGenerator smsCodeGenerator;
+    
+    @Autowired
+    private SmsCodeSender smsCodeSender;
     
     @GetMapping("/verifycode/image")
     public void createCode(HttpServletRequest request,HttpServletResponse response) throws IOException{
         
-        ImageCode imageCode = ImageCodeGenerator.generator(new ServletWebRequest(request));
+    	ImageCode imageCode = (ImageCode) imageCodeGenerator.generator(new ServletWebRequest(request));
         		//createImageCode(request, response);
         sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
+    }
+    
+    @GetMapping("/verifycode/sms")
+    public void createSmsCode(HttpServletRequest request,HttpServletResponse response) throws Exception{
+
+        //调验证码生成接口方式
+        ValidateCode smsCode = smsCodeGenerator.generator(new ServletWebRequest(request));
+        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, smsCode);
+        //获取手机号
+        String mobile = ServletRequestUtils.getRequiredStringParameter(request, "mobile");
+        //发送短信验证码
+        smsCodeSender.send(mobile, smsCode.getCode());
     }
 
     

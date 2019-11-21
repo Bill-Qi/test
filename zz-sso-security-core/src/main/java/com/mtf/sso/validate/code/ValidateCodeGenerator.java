@@ -19,5 +19,5 @@ public interface ValidateCodeGenerator {
      * @return ImageCode  
      * @throws
      */
-    ImageCode generator(ServletWebRequest request);
+	ValidateCode generator(ServletWebRequest request);
 }
