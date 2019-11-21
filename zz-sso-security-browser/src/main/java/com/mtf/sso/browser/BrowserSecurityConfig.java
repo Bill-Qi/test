@@ -38,7 +38,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	 //注入自己写的登录失败处理器
     @Autowired
-    private AuthenticationFailureHandler mtfAuthencationFailHandler;
+    private AuthenticationFailureHandler mtfAuthencationFailureHandler;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -47,8 +47,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 		//验证码过滤器
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         //验证码过滤器中使用自己的错误处理
-        validateCodeFilter.setAuthenticationFailureHandler(mtfAuthencationFailHandler);
-		
+        validateCodeFilter.setAuthenticationFailureHandler(mtfAuthencationFailureHandler);
+        //配置验证码过滤器
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
+        
 		http
 			.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)//把验证码过滤器加载登录过滤器前边
 			.formLogin() // 表单认证
@@ -57,7 +60,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			// 配置让Spring知道让UsernamePasswordAuthenticationFilter过滤器去处理/authentication/form路径
 			.loginProcessingUrl("/authentication/form")
 			.successHandler(mtfAuthenticationSuccessHandler)
-			.failureHandler(mtfAuthencationFailHandler)
+			.failureHandler(mtfAuthencationFailureHandler)
 			.and().authorizeRequests() // 下边的都是授权的配置
 			.antMatchers("/authentication/require", securityProperties.getBrowser().getLoginPage()
 					,"/verifycode/image").permitAll() //验证码// 放过登录页不过滤，否则报错

@@ -3,10 +3,14 @@
  */
 package com.mtf.sso.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +32,16 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	
+	@GetMapping
+	public List<User> query(Pageable pageable){
+		
+		List<User> users = new ArrayList<User>();
+		users.add(new User());
+		users.add(new User());
+		users.add(new User());
+		return users;
+	}
 	
 	/*
 	 * @Autowired private ProviderSignInUtils providerSignInUtils;
@@ -69,7 +83,7 @@ public class UserController {
 		return user;
 	}
 
-	@PutMapping("/{id:\\d+}")
+	@PutMapping("/{id:\\d+	}")
 	public User update(@Valid @RequestBody User user, BindingResult errors) {
 
 		System.out.println(user.getId());

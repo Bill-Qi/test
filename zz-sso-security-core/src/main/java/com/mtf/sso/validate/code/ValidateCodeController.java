@@ -31,26 +31,30 @@ public class ValidateCodeController {
     @Autowired
     private SecurityProperties securityProperties;
     
+    @Autowired
+    private ValidateCodeGenerator ImageCodeGenerator;
+    
     @GetMapping("/verifycode/image")
     public void createCode(HttpServletRequest request,HttpServletResponse response) throws IOException{
         
-        ImageCode imageCode = createImageCode(request, response);
+        ImageCode imageCode = ImageCodeGenerator.generator(new ServletWebRequest(request));
+        		//createImageCode(request, response);
         sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
     }
 
     
-    private ImageCode createImageCode(HttpServletRequest request, HttpServletResponse response) {
-        //VerifyCode verifyCode = new VerifyCode();
-    	//先从request里读取有没有长、宽、字符个数参数，有的话就用，没有用默认的
-        int width  = ServletRequestUtils.getIntParameter(request, "width",securityProperties.getCode().getImage().getWidth());
-        
-        int height = ServletRequestUtils.getIntParameter(request, "height",securityProperties.getCode().getImage().getHeight());
-        
-        int charLength = this.securityProperties.getCode().getImage().getLength();
-        VerifyCode verifyCode = new VerifyCode(width,height,charLength);
-    	
-        return new ImageCode(verifyCode.getImage(),verifyCode.getText(),this.securityProperties.getCode().getImage().getExpireIn());
-    }
+//    private ImageCode createImageCode(HttpServletRequest request, HttpServletResponse response) {
+//        //VerifyCode verifyCode = new VerifyCode();
+//    	//先从request里读取有没有长、宽、字符个数参数，有的话就用，没有用默认的
+//        int width  = ServletRequestUtils.getIntParameter(request, "width",securityProperties.getCode().getImage().getWidth());
+//        
+//        int height = ServletRequestUtils.getIntParameter(request, "height",securityProperties.getCode().getImage().getHeight());
+//        
+//        int charLength = this.securityProperties.getCode().getImage().getLength();
+//        VerifyCode verifyCode = new VerifyCode(width,height,charLength);
+//    	
+//        return new ImageCode(verifyCode.getImage(),verifyCode.getText(),this.securityProperties.getCode().getImage().getExpireIn());
+//    }
 
 }
