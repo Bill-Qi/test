@@ -13,3 +13,7 @@ SimpleUrlAuthenticationFailureHandler接口是
 AuthenticationFailureHandler的实现；然后继承它覆盖它的方法，实现Json/Html自定义跳转；
 
 ***增加图片验证 昨天又犯了导入包错误的问题 严重重视***
+
+2019.11.21
+***昨天犯了个细节问题的错误，希望以后不要再犯，多重视细节流程***
+用增量的思维解决不断改变的代码需求
