@@ -14,6 +14,8 @@ public class BrowserProperties {
 
 	// 配置默认返回json
 	private LoginType loginType = LoginType.JSON;
+	
+	private Integer rememberMeSeconds= 60;
 
 	public String getLoginPage() {
 		return loginPage;
@@ -29,6 +31,14 @@ public class BrowserProperties {
 
 	public void setLoginType(LoginType loginType) {
 		this.loginType = loginType;
+	}
+
+	public Integer getRememberMeSeconds() {
+		return rememberMeSeconds;
+	}
+
+	public void setRememberMeSeconds(Integer rememberMeSeconds) {
+		this.rememberMeSeconds = rememberMeSeconds;
 	}
 
 }
